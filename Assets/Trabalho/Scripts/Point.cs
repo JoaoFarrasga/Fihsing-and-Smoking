@@ -14,6 +14,7 @@ public class Point : MonoBehaviour
     public Transform holder;
     public AudioSource audioS;
     [SerializeField] private GameObject center;
+    public DistanceHandGrabInteractable grab;
 
     // Limits for diagonal movement (relative to spawn position)
     [Header("Diagonal Movement Range")]
@@ -26,6 +27,10 @@ public class Point : MonoBehaviour
     private Vector3 direction;
     private bool movingForward = true;
 
+
+    [SerializeField] private float rotationOffsetY = 90f;
+    // Ajuste o valor 90f ou -90f dependendo de como seu modelo est� no mundo
+    
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -74,15 +79,30 @@ public class Point : MonoBehaviour
         transform.position = movingForward ? startPoint : endPoint;
     }
 
-    /// <summary>
-    /// Moves the object diagonally between start and end points.
-    /// </summary>
+
     private void MoveAlongLine()
     {
         Vector3 moveDir = movingForward ? direction : -direction;
+
+        // Normalizamos para evitar problemas de magnitude.
+        moveDir = moveDir.normalized;
+
+        // 1) "Fatiar" a componente Y (caso queira ignorar subidas/descidas)
+        Vector3 planarDirection = new Vector3(moveDir.x, 0f, moveDir.z);
+
+        // 2) Gerar o "LookRotation" base
+        Quaternion targetRot = Quaternion.LookRotation(planarDirection, Vector3.up);
+
+        // 3) Adicionar offset (ex: 90 graus no Y)
+        targetRot *= Quaternion.Euler(0f, rotationOffsetY, 0f);
+
+        // 4) Ajustar a rota��o
+        transform.rotation = targetRot;
+
+        // 5) Mover
         transform.position += moveDir * moveSpeed * Time.deltaTime;
 
-        // Reverse direction when reaching limits
+        // Inverter dire��o ao chegar nos limites
         if (movingForward && Vector3.Distance(transform.position, endPoint) < 0.1f)
         {
             movingForward = false;
@@ -115,6 +135,8 @@ public class Point : MonoBehaviour
 
     public void GetReleased()
     {
+        grab.MaxInteractors = 0;
+        if(holder != null) holder.GetComponent<Magnet>().points.Remove(this);
         rb.useGravity = true;
         holder = null;
         transform.SetParent(null, true);
@@ -143,7 +165,7 @@ public class Point : MonoBehaviour
     public void GetPoints()
     {
         GameManager.Instance.AddPoints(100);
-        center.GetComponent<ParticleSystem>().Play();
+        center.gameObject.SetActive(true);
         Destroy(gameObject, center.GetComponent<ParticleSystem>().main.duration);
     }
 

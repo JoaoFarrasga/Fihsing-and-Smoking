@@ -15,7 +15,7 @@ public class Magnet : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if (other.transform.CompareTag("Peixe"))
+        if (other.transform.CompareTag("Peixe") && points.Count < 1)
         {
             var point = other.gameObject.GetComponent<Point>();
             point.GetPickedUP(pullPosition, pullSpeed);

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpawnPeixes : MonoBehaviour
 {
-    [Header("Transform que representa o 'centro' ou referência do Spawn")]
+    [Header("Transform que representa o 'centro' ou referÃªncia do Spawn")]
     [SerializeField] private Transform spawnArea;
 
     [Header("Limites no eixo X para o spawn")]
@@ -18,36 +18,40 @@ public class SpawnPeixes : MonoBehaviour
     [Header("Lista de Prefabs a serem spawnados")]
     [SerializeField] private List<GameObject> prefabs;
 
-    [Header("Quantos objetos serão criados inicialmente?")]
+    [Header("Quantos objetos serÃ£o criados inicialmente?")]
     [SerializeField] private int quantidade = 1;
 
     // Quantidade de objetos ativos ou instanciados atualmente
     [SerializeField] private int quantidade_On = 0;
 
+    [Header("Delay to Spawn in the begining")]
+    [SerializeField] private float minDelay = 0.5f;    // Minimum time delay
+    [SerializeField] private float maxDelay = 2f;      // Maximum time delay
+
     private void Start()
     {
-        SpawnObjetos();
+        StartCoroutine(SpawnFishCoroutine());
     }
 
     private void Update()
     {
-        // Quando chegar a zero (por exemplo, se forem destruídos), gera novamente
-        if (quantidade_On == 0)
+        // Quando chegar a zero (por exemplo, se forem destruÃ­dos), gera novamente
+        if (quantidade_On < quantidade)
         {
             SpawnObjetos();
         }
     }
 
-    // Método para spawnar os objetos
+    // MÃ©todo para spawnar os objetos
     public void SpawnObjetos()
     {
         for (int i = 0; i < quantidade; i++)
         {
-            // Gera coordenadas aleatórias dentro dos limites
+            // Gera coordenadas aleatÃ³rias dentro dos limites
             float randomX = Random.Range(xStart, xEnd);
             float randomY = Random.Range(yStart, yEnd);
 
-            // Monta a posição final (usando o Z do 'spawnArea', se quiser manter)
+            // Monta a posiÃ§Ã£o final (usando o Z do 'spawnArea', se quiser manter)
             Vector3 spawnPos = new Vector3(
                 randomX,
                 randomY,
@@ -66,19 +70,44 @@ public class SpawnPeixes : MonoBehaviour
         }
     }
 
+    private IEnumerator SpawnFishCoroutine()
+    {
+        for (int i = 0; i < quantidade; i++)
+        {
+            // Generate random position within the area
+            float randomX = Random.Range(xStart, xEnd);
+            float randomY = Random.Range(yStart, yEnd);
+            Vector3 spawnPos = new Vector3(randomX, randomY, spawnArea.position.z);
+
+            // Select a random prefab
+            int indexAleatorio = Random.Range(0, prefabs.Count);
+            GameObject prefabEscolhido = prefabs[indexAleatorio];
+
+            // Instantiate the prefab
+            Instantiate(prefabEscolhido, spawnPos, Quaternion.Euler(0, -110.552f, 0));
+
+            // Increment counter
+            quantidade_On++;
+
+            // Wait for a random delay before spawning the next fish
+            float randomDelay = Random.Range(minDelay, maxDelay);
+            yield return new WaitForSeconds(randomDelay);
+        }
+    }
+
     private void OnDrawGizmos()
     {
         if (spawnArea == null) return;
 
         Gizmos.color = Color.green;
 
-        // Calcula os cantos do retângulo
+        // Calcula os cantos do retÃ¢ngulo
         Vector3 bottomLeft = new Vector3(xStart, yStart, spawnArea.position.z);
         Vector3 bottomRight = new Vector3(xEnd, yStart, spawnArea.position.z);
         Vector3 topLeft = new Vector3(xStart, yEnd, spawnArea.position.z);
         Vector3 topRight = new Vector3(xEnd, yEnd, spawnArea.position.z);
 
-        // Desenha as linhas do retângulo
+        // Desenha as linhas do retÃ¢ngulo
         Gizmos.DrawLine(bottomLeft, bottomRight);
         Gizmos.DrawLine(bottomRight, topRight);
         Gizmos.DrawLine(topRight, topLeft);
