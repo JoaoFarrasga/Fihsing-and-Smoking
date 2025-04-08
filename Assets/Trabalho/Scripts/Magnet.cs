@@ -21,6 +21,7 @@ public class Magnet : MonoBehaviour
             point.GetPickedUP(pullPosition, pullSpeed);
             points.Add(point);
             other.gameObject.GetComponentInChildren<DistanceHandGrabInteractable>().MaxInteractors = -1;
+            other.gameObject.GetComponentInChildren<DistanceHandGrabInteractable>().MaxSelectingInteractors = -1;
         }
     }
 }

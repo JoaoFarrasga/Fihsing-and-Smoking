@@ -95,7 +95,6 @@ GameObject:
   - component: {fileID: 503261113283081727}
   - component: {fileID: 3647943147285661037}
   - component: {fileID: 2873396159369178395}
-  - component: {fileID: 8105962562226612815}
   - component: {fileID: 7615645984695930548}
   - component: {fileID: 8449109156521163638}
   - component: {fileID: 6774809471347170251}
@@ -154,7 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43f86b14a27b52f4f9298c33015b5c26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _transferOnSecondSelection: 1
+  _transferOnSecondSelection: 0
   _addNewPointsToFront: 0
   _forwardElement: {fileID: 0}
   _oneGrabTransformer: {fileID: 0}
@@ -178,12 +177,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interactorFilters: []
   _maxInteractors: 0
-  _maxSelectingInteractors: -1
+  _maxSelectingInteractors: 0
   _data: {fileID: 0}
   _pointableElement: {fileID: 3647943147285661037}
   _rigidbody: {fileID: 8265587122074589169}
   _physicsGrabbable: {fileID: 0}
-  _resetGrabOnGrabsUpdated: 1
+  _resetGrabOnGrabsUpdated: 0
   _slippiness: 0
   _supportedGrabTypes: 3
   _pinchGrabRules:
@@ -203,28 +202,6 @@ MonoBehaviour:
   _movementProvider: {fileID: 7615645984695930548}
   _handAligment: 1
   _handGrabPoses: []
---- !u!114 &8105962562226612815
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6696779005492016886}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07525681efbca7a4e9643ab3a592ada7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interactorFilters: []
-  _maxInteractors: -1
-  _maxSelectingInteractors: -1
-  _data: {fileID: 0}
-  _pointableElement: {fileID: 3647943147285661037}
-  _rigidbody: {fileID: 8265587122074589169}
-  _grabSource: {fileID: 0}
-  _resetGrabOnGrabsUpdated: 1
-  _physicsGrabbable: {fileID: 0}
-  _movementProvider: {fileID: 7615645984695930548}
 --- !u!114 &7615645984695930548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -290,7 +267,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 0}
-  _customIcon: {fileID: 2800000, guid: aa3a2b3718100f84fb5d8ff9adb8ccb7, type: 3}
+  _customIcon: {fileID: 0}
   _snappiness: 1
 --- !u!114 &2812424882461513754
 MonoBehaviour:

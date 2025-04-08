@@ -136,6 +136,7 @@ public class Point : MonoBehaviour
     public void GetReleased()
     {
         grab.MaxInteractors = 0;
+        grab.MaxSelectingInteractors = 0;
         if(holder != null) holder.GetComponent<Magnet>().points.Remove(this);
         rb.useGravity = true;
         holder = null;
